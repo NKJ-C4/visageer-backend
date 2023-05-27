@@ -1,3 +1,33 @@
+const {ClarifaiStub, grpc} = require("clarifai-nodejs-grpc");
+
+const stub = ClarifaiStub.grpc();
+
+const metadata = new grpc.Metadata();
+metadata.set("authorization", "Key d4ceee3b778c452bbeccd3615cee78dc");
+
+const handleClarifaiApi = (req, res) => {
+    stub.PostModelOutputs(
+        {
+            // This is the model ID of a publicly available General model. You may use any other public or custom model ID.
+            model_id: "face-detection",
+            inputs: [{data: {image: {url: req.body.input}}}]
+        },
+        metadata,
+        (err, response) => {
+            if (err) {
+                console.log("Error: " + err);
+                return;
+            }
+    
+            if (response.status.code !== 10000) {
+                console.log("Received failed status: " + response.status.description + "\n" + response.status.details);
+                return;
+            }
+            return res.json(response)
+        }
+    );
+}
+  
 const addUserEntries = (db) => (req, res) => {
     const { id } = req.body;
     db('users')
@@ -11,5 +41,6 @@ const addUserEntries = (db) => (req, res) => {
 }
 
 module.exports = {
-    addUserEntries
+    addUserEntries: addUserEntries,
+    handleClarifaiApi: handleClarifaiApi
 }
