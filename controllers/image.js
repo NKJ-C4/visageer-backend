@@ -3,7 +3,7 @@ const {ClarifaiStub, grpc} = require("clarifai-nodejs-grpc");
 const stub = ClarifaiStub.grpc();
 
 const metadata = new grpc.Metadata();
-metadata.set("authorization", "Key d4ceee3b778c452bbeccd3615cee78dc");
+metadata.set("authorization", "Key "+ process.env.API_CLARIFAI);
 
 const handleClarifaiApi = (req, res) => {
     stub.PostModelOutputs(
