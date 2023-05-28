@@ -36,4 +36,4 @@ app.put('/image', addUserEntries(db))
 
 app.post('/imageurl', (req, res) => handleClarifaiApi(req, res))
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
