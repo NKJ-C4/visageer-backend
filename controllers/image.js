@@ -16,12 +16,12 @@ const handleClarifaiApi = (req, res) => {
         (err, response) => {
             if (err) {
                 console.log("Error: " + err);
-                return;
+                return res.status(400).json("Unable to fetch");
             }
     
             if (response.status.code !== 10000) {
                 console.log("Received failed status: " + response.status.description + "\n" + response.status.details);
-                return;
+                return res.status(400).json("Unable to fetch");
             }
             return res.json(response)
         }
